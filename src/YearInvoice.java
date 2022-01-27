@@ -9,6 +9,7 @@ public class YearInvoice {
         this.isExpense = Boolean.parseBoolean(items[2]);
     }
 
+
     public Month getMonth() {
         return month;
     }

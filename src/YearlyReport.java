@@ -3,11 +3,20 @@ import java.util.HashMap;
 
 public class YearlyReport {
     private short year;
-    private HashMap<Month, YearInvoice[]> invoices;
+    private HashMap<Month, Integer> expense;
+    private HashMap<Month, Integer> income;
 
     public YearlyReport(short year, ArrayList<YearInvoice> yearInvoices) {
         this.year = year;
-        this.invoices = yearInvoices;
+        this.expense = new HashMap<>();
+        this.income = new HashMap<>();
+        for (YearInvoice invoice: yearInvoices) {
+            if (invoice.isExpense()) {
+                this.expense.put(invoice.getMonth(), invoice.getAmount());
+            } else {
+                this.income.put(invoice.getMonth(), invoice.getAmount());
+            }
+        }
     }
 
     public void showReport() {
@@ -15,16 +24,12 @@ public class YearlyReport {
         System.out.println("Отчёт за " + getYear() + " год");
         System.out.println("Прибыль по каждому месяцу");
         for (Month month: Month.values()) {
-
+            if (getExpense().containsKey(month) && getIncome().containsKey(month)) {
+                System.out.println("За "+ Month.toString(month) + " прибыль составляет " + getProfit(month));
+            } else {
+                System.out.println("За "+ Month.toString(month) + " нет данных");
+            }
         }
-
-        MonthInvoice mostProfitableItem = getMostProfitableItem();
-        System.out.println("Самый прибыльный товар: " + mostProfitableItem.getItemName());
-        System.out.println("его продано на " + mostProfitableItem.profit() + " денег");
-        MonthInvoice mostExpensiveItem = getMostExpensiveItem();
-        System.out.println("Самая большая трата: " + mostExpensiveItem.getItemName());
-        System.out.println("потрачено " + mostExpensiveItem.profit() + " денег");
-        System.out.println("-------------------------");
     }
 
     public short getYear() {
@@ -35,12 +40,23 @@ public class YearlyReport {
         this.year = year;
     }
 
-    public ArrayList<YearInvoice> getYearInvoices() {
-        return yearInvoices;
+    public HashMap<Month, Integer> getExpense() {
+        return expense;
     }
 
-    public void setYearInvoices(ArrayList<YearInvoice> yearInvoices) {
-        this.yearInvoices = yearInvoices;
+    public void setExpense(HashMap<Month, Integer> expense) {
+        this.expense = expense;
     }
 
+    public HashMap<Month, Integer> getIncome() {
+        return income;
+    }
+
+    public int getProfit(Month month) {
+        return getIncome().get(month) - getExpense().get(month);
+    }
+
+    public void setIncome(HashMap<Month, Integer> profit) {
+        this.income = profit;
+    }
 }

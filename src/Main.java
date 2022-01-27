@@ -23,7 +23,7 @@ public class Main {
                         String path = "./resources/m.20210" + i + ".csv";
                         String fileContents = readFileContentsOrNull(path);
                         if (fileContents != null) {
-                            String[] lines = fileContents.split("\\n");
+                            String[] lines = fileContents.split("\\r\\n");
                             ArrayList<MonthInvoice> monthInvoices = new ArrayList<>();
                             for (String line:lines) {
                                 if ("item_name,is_expense,quantity,sum_of_one".equals(line)) {
@@ -45,7 +45,7 @@ public class Main {
                     String path = "./resources/y.2021.csv";
                     String fileContents = readFileContentsOrNull(path);
                     if (fileContents != null) {
-                        String[] lines = fileContents.split("\\n");
+                        String[] lines = fileContents.split("\\r\\n");
                         ArrayList<YearInvoice> yearInvoices = new ArrayList<>();
                         for (String line:lines) {
                             if ("month,amount,is_expense".equals(line)) {
@@ -61,7 +61,16 @@ public class Main {
                     }
                     break;
                 case "3": {
-                    System.out.println("Сверка отчётов");
+                    if (monthlyReports != null && yearlyReport != null) {
+                        System.out.println("Вывод информации о месячных отчётах");
+                        for (MonthlyReport report: monthlyReports) {
+                            report.showReport();
+                        }
+                    } else {
+                        System.out.println("--------------------");
+                        System.out.println("Отчет не сформирован");
+                        System.out.println("--------------------");
+                    } break;
                     break;
                 }
                 case "4":
@@ -71,7 +80,9 @@ public class Main {
                             report.showReport();
                         }
                     } else {
+                        System.out.println("--------------------");
                         System.out.println("Отчет не сформирован");
+                        System.out.println("--------------------");
                     } break;
                 case "5": {
                     if (yearlyReport != null) {
@@ -79,7 +90,9 @@ public class Main {
                         yearlyReport.showReport();
 
                     } else {
+                        System.out.println("--------------------");
                         System.out.println("Отчет не сформирован");
+                        System.out.println("--------------------");
                     } break;
                 }
                 case "exit":
