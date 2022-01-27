@@ -1,8 +1,31 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class YearlyReport {
-    short year;
-    Month month;
-    int amount;
-    boolean isExpense;
+    private short year;
+    private HashMap<Month, YearInvoice[]> invoices;
+
+    public YearlyReport(short year, ArrayList<YearInvoice> yearInvoices) {
+        this.year = year;
+        this.invoices = yearInvoices;
+    }
+
+    public void showReport() {
+        System.out.println("-------------------------");
+        System.out.println("Отчёт за " + getYear() + " год");
+        System.out.println("Прибыль по каждому месяцу");
+        for (Month month: Month.values()) {
+
+        }
+
+        MonthInvoice mostProfitableItem = getMostProfitableItem();
+        System.out.println("Самый прибыльный товар: " + mostProfitableItem.getItemName());
+        System.out.println("его продано на " + mostProfitableItem.profit() + " денег");
+        MonthInvoice mostExpensiveItem = getMostExpensiveItem();
+        System.out.println("Самая большая трата: " + mostExpensiveItem.getItemName());
+        System.out.println("потрачено " + mostExpensiveItem.profit() + " денег");
+        System.out.println("-------------------------");
+    }
 
     public short getYear() {
         return year;
@@ -12,27 +35,12 @@ public class YearlyReport {
         this.year = year;
     }
 
-    public Month getMonth() {
-        return month;
+    public ArrayList<YearInvoice> getYearInvoices() {
+        return yearInvoices;
     }
 
-    public void setMonth(Month month) {
-        this.month = month;
+    public void setYearInvoices(ArrayList<YearInvoice> yearInvoices) {
+        this.yearInvoices = yearInvoices;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public boolean isExpense() {
-        return isExpense;
-    }
-
-    public void setExpense(boolean expense) {
-        isExpense = expense;
-    }
 }

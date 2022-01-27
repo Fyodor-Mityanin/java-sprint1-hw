@@ -1,10 +1,15 @@
+import java.util.ArrayList;
+
 public class MonthlyReport {
-    short year;
-    Month month;
-    String itemName;
-    int quantity;
-    int sumOfOne;
-    boolean isExpense;
+    private short year;
+    private Month month;
+    private ArrayList<MonthInvoice> invoices;
+
+    public MonthlyReport(short year, Month month, ArrayList<MonthInvoice> invoices) {
+        this.year = year;
+        this.month = month;
+        this.invoices = invoices;
+    }
 
     public short getYear() {
         return year;
@@ -22,35 +27,54 @@ public class MonthlyReport {
         this.month = month;
     }
 
-    public String getItemName() {
-        return itemName;
+    public ArrayList<MonthInvoice> getInvoices() {
+        return invoices;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setInvoices(ArrayList<MonthInvoice> invoices) {
+        this.invoices = invoices;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void showReport() {
+        System.out.println("-------------------------");
+        System.out.println("Отчёт за " + Month.toString(getMonth()));
+        MonthInvoice mostProfitableItem = getMostProfitableItem();
+        System.out.println("Самый прибыльный товар: " + mostProfitableItem.getItemName());
+        System.out.println("его продано на " + mostProfitableItem.profit() + " денег");
+        MonthInvoice mostExpensiveItem = getMostExpensiveItem();
+        System.out.println("Самая большая трата: " + mostExpensiveItem.getItemName());
+        System.out.println("потрачено " + mostExpensiveItem.profit() + " денег");
+        System.out.println("-------------------------");
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    private MonthInvoice getMostProfitableItem() {
+        int max = 0;
+        MonthInvoice mostProfitableItem = null;
+        for(MonthInvoice invoice: getInvoices()) {
+            if (!invoice.isExpense()) {
+                int profit = invoice.profit();
+                if (profit > max) {
+                    max = profit;
+                    mostProfitableItem = invoice;
+                }
+            }
+        }
+        return mostProfitableItem;
     }
 
-    public int getSumOfOne() {
-        return sumOfOne;
+    private MonthInvoice getMostExpensiveItem() {
+        int max = 0;
+        MonthInvoice mostExpensiveItem = null;
+        for(MonthInvoice invoice: getInvoices()) {
+            if (invoice.isExpense()) {
+                int expense = invoice.profit();
+                if (expense > max) {
+                    max = expense;
+                    mostExpensiveItem = invoice;
+                }
+            }
+        }
+        return mostExpensiveItem;
     }
 
-    public void setSumOfOne(int sumOfOne) {
-        this.sumOfOne = sumOfOne;
-    }
-
-    public boolean isExpense() {
-        return isExpense;
-    }
-
-    public void setExpense(boolean expense) {
-        isExpense = expense;
-    }
 }

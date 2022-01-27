@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -5,47 +9,83 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-
+        ArrayList<MonthlyReport> monthlyReports = null;
+        YearlyReport yearlyReport = null;
         label:
         while (true) {
             printMenu();
             String command = scanner.nextLine();
             switch (command) {
                 case "1":
-                    System.out.println("Ваши сбережения: " + moneyBeforeSalary + " RUB");
-                    System.out.println("В какую валюту хотите конвертировать? Доступные варианты: 1 - USD, 2 - EUR, 3 - JPY.");
-                    int currency = scanner.nextInt();
-                    converter.convert(moneyBeforeSalary, currency);
+                    System.out.println("Считывание месячных отчетов");
+                    monthlyReports = new ArrayList<>();
+                    for (int i = 1; i <= 3; i++) {
+                        String path = "./resources/m.20210" + i + ".csv";
+                        String fileContents = readFileContentsOrNull(path);
+                        if (fileContents != null) {
+                            String[] lines = fileContents.split("\\n");
+                            ArrayList<MonthInvoice> monthInvoices = new ArrayList<>();
+                            for (String line:lines) {
+                                if ("item_name,is_expense,quantity,sum_of_one".equals(line)) {
+                                    continue;
+                                }
+                                String[] items = line.split(",");
+                                monthInvoices.add(new MonthInvoice(items));
+                            }
+                            Month month = Month.monthByNumber(String.valueOf(i));
+                            monthlyReports.add(new MonthlyReport((short) 2021, month, monthInvoices));
+                        } else {
+                            System.out.println("Ошибка при чтении файла");
+                            break;
+                        }
+                    }
                     break;
                 case "2":
-                    dinnerAdvisor.getAdvice(moneyBeforeSalary, daysBeforeSalary);
+                    System.out.println("Считывание годового отчёта");
+                    String path = "./resources/y.2021.csv";
+                    String fileContents = readFileContentsOrNull(path);
+                    if (fileContents != null) {
+                        String[] lines = fileContents.split("\\n");
+                        ArrayList<YearInvoice> yearInvoices = new ArrayList<>();
+                        for (String line:lines) {
+                            if ("month,amount,is_expense".equals(line)) {
+                                continue;
+                            }
+                            String[] items = line.split(",");
+                            yearInvoices.add(new YearInvoice(items));
+                        }
+                        yearlyReport = new YearlyReport((short) 2021, yearInvoices);
+                    } else {
+                        System.out.println("Ошибка при чтении файла");
+                        break;
+                    }
                     break;
                 case "3": {
-                    System.out.println("Введите размер траты:");
-                    double expense = scanner.nextDouble();
-                    System.out.println("К какой категории относится трата?");
-                    String category = scanner.next();
-                    moneyBeforeSalary = expensesManager.saveExpense(moneyBeforeSalary, category, expense);
+                    System.out.println("Сверка отчётов");
                     break;
                 }
                 case "4":
-                    expensesManager.printAllExpensesByCategories();
-                    break;
+                    if (monthlyReports != null) {
+                        System.out.println("Вывод информации о месячных отчётах");
+                        for (MonthlyReport report: monthlyReports) {
+                            report.showReport();
+                        }
+                    } else {
+                        System.out.println("Отчет не сформирован");
+                    } break;
                 case "5": {
-                    System.out.println("В какой категории искать?");
-                    String category = scanner.next();
-                    System.out.println("Самая большая трата в категории " + category + " составила "
-                            + expensesManager.findMaxExpenseInCategory(category) + " руб.");
-                    break;
+                    if (yearlyReport != null) {
+                        System.out.println("Вывод информации о годовом отчёте");
+                        yearlyReport.showReport();
+
+                    } else {
+                        System.out.println("Отчет не сформирован");
+                    } break;
                 }
-                case "6":
-                    expensesManager.removeAllExpenses();
-                    break;
                 case "exit":
-                    System.out.println("Выход");
+                    System.out.println("Выход из программы");
                     break label;
                 default:
-                    System.out.println("Извините, такой команды нет.");
                     break;
             }
         }
@@ -59,6 +99,16 @@ public class Main {
                 "4 - Вывести информацию о всех месячных отчётах\n" +
                 "5 - Вывести информацию о годовом отчёте\n" +
                 "exit - Выход из программы");
+    }
+
+    private static String readFileContentsOrNull(String path) {
+        try {
+            return Files.readString(Path.of(path));
+        } catch (IOException e) {
+            System.out.println("Невозможно прочитать файл с месячным отчётом. " +
+                    "Возможно, файл не находится в нужной директории.");
+            return null;
+        }
     }
 }
 
