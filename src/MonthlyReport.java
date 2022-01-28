@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class MonthlyReport {
-    private short year;
-    private Month month;
-    private ArrayList<MonthInvoice> invoices;
+    private final short year;
+    private final Month month;
+    private final ArrayList<MonthInvoice> invoices;
 
     public MonthlyReport(short year, Month month, ArrayList<MonthInvoice> invoices) {
         this.year = year;
@@ -11,33 +11,21 @@ public class MonthlyReport {
         this.invoices = invoices;
     }
 
-    public short getYear() {
-        return year;
-    }
-
-    public void setYear(short year) {
-        this.year = year;
-    }
-
     public Month getMonth() {
         return month;
-    }
-
-    public void setMonth(Month month) {
-        this.month = month;
     }
 
     public ArrayList<MonthInvoice> getInvoices() {
         return invoices;
     }
 
-    public void setInvoices(ArrayList<MonthInvoice> invoices) {
-        this.invoices = invoices;
+    public short getYear() {
+        return year;
     }
 
     public void showReport() {
         System.out.println("-------------------------");
-        System.out.println("Отчёт за " + Month.toString(getMonth()));
+        System.out.println("Отчёт за " + Month.toString(getMonth()) + " " + getYear() + " год");
         MonthInvoice mostProfitableItem = getMostProfitableItem();
         System.out.println("Самый прибыльный товар: " + mostProfitableItem.getItemName());
         System.out.println("его продано на " + mostProfitableItem.profit() + " денег");
@@ -76,5 +64,4 @@ public class MonthlyReport {
         }
         return mostExpensiveItem;
     }
-
 }

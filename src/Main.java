@@ -17,7 +17,6 @@ public class Main {
             String command = scanner.nextLine();
             switch (command) {
                 case "1":
-                    System.out.println("Считывание месячных отчетов");
                     monthlyReports = new ArrayList<>();
                     for (int i = 1; i <= 3; i++) {
                         String path = "./resources/m.20210" + i + ".csv";
@@ -39,9 +38,11 @@ public class Main {
                             break;
                         }
                     }
+                    System.out.println("------------------------------------------");
+                    System.out.println("Считывание месячных отчетов прошло успешно");
+                    System.out.println("------------------------------------------");
                     break;
                 case "2":
-                    System.out.println("Считывание годового отчёта");
                     String path = "./resources/y.2021.csv";
                     String fileContents = readFileContentsOrNull(path);
                     if (fileContents != null) {
@@ -59,19 +60,18 @@ public class Main {
                         System.out.println("Ошибка при чтении файла");
                         break;
                     }
+                    System.out.println("------------------------------------------");
+                    System.out.println("Считывание годового отчета прошло успешно");
+                    System.out.println("------------------------------------------");
                     break;
                 case "3": {
                     if (monthlyReports != null && yearlyReport != null) {
-                        System.out.println("Вывод информации о месячных отчётах");
-                        for (MonthlyReport report: monthlyReports) {
-                            report.showReport();
-                        }
+                        yearlyReport.checkReports(monthlyReports);
                     } else {
                         System.out.println("--------------------");
                         System.out.println("Отчет не сформирован");
                         System.out.println("--------------------");
                     } break;
-                    break;
                 }
                 case "4":
                     if (monthlyReports != null) {

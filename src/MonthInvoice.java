@@ -1,8 +1,8 @@
 public class MonthInvoice {
-    private String itemName;
-    private int quantity;
-    private int sumOfOne;
-    private boolean isExpense;
+    private final String itemName;
+    private final int quantity;
+    private final int sumOfOne;
+    private final boolean isExpense;
 
     MonthInvoice(String[] items) {
         this.itemName = items[0];
@@ -19,33 +19,8 @@ public class MonthInvoice {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getSumOfOne() {
-        return sumOfOne;
-    }
-
-    public void setSumOfOne(int sumOfOne) {
-        this.sumOfOne = sumOfOne;
-    }
-
     public boolean isExpense() {
         return isExpense;
     }
-
-    public void setExpense(boolean expense) {
-        isExpense = expense;
-    }
-
 
 }

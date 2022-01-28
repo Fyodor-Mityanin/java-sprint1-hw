@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class YearlyReport {
-    private short year;
-    private HashMap<Month, Integer> expense;
-    private HashMap<Month, Integer> income;
+    private final short year;
+    private final HashMap<Month, Integer> expense;
+    private final HashMap<Month, Integer> income;
 
     public YearlyReport(short year, ArrayList<YearInvoice> yearInvoices) {
         this.year = year;
@@ -19,6 +19,22 @@ public class YearlyReport {
         }
     }
 
+    public short getYear() {
+        return year;
+    }
+
+    public HashMap<Month, Integer> getExpense() {
+        return expense;
+    }
+
+    public HashMap<Month, Integer> getIncome() {
+        return income;
+    }
+
+    public int getProfit(Month month) {
+        return getIncome().get(month) - getExpense().get(month);
+    }
+
     public void showReport() {
         System.out.println("-------------------------");
         System.out.println("Отчёт за " + getYear() + " год");
@@ -30,33 +46,31 @@ public class YearlyReport {
                 System.out.println("За "+ Month.toString(month) + " нет данных");
             }
         }
+        System.out.println("-------------------------");
     }
 
-    public short getYear() {
-        return year;
-    }
-
-    public void setYear(short year) {
-        this.year = year;
-    }
-
-    public HashMap<Month, Integer> getExpense() {
-        return expense;
-    }
-
-    public void setExpense(HashMap<Month, Integer> expense) {
-        this.expense = expense;
-    }
-
-    public HashMap<Month, Integer> getIncome() {
-        return income;
-    }
-
-    public int getProfit(Month month) {
-        return getIncome().get(month) - getExpense().get(month);
-    }
-
-    public void setIncome(HashMap<Month, Integer> profit) {
-        this.income = profit;
+    public void checkReports(ArrayList<MonthlyReport> monthlyReports) {
+        boolean isCorrect = true;
+        System.out.println("-------------------------");
+        for (MonthlyReport monthlyReport: monthlyReports) {
+            Month month = monthlyReport.getMonth();
+            int monthExpense = getExpense().get(month);
+            int monthIncome = getIncome().get(month);
+            for (MonthInvoice invoice : monthlyReport.getInvoices()) {
+                if (invoice.isExpense()) {
+                    monthExpense -= invoice.profit();
+                } else {
+                    monthIncome -= invoice.profit();
+                }
+            }
+            if (monthExpense != 0 || monthIncome != 0) {
+                System.out.println("Что-то не так с отчётом за " + Month.toString(month));
+                isCorrect = false;
+            }
+        }
+        if (isCorrect) {
+            System.out.println("Дебет с кредитом сходятся");
+        }
+        System.out.println("-------------------------");
     }
 }
