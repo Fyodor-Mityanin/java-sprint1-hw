@@ -23,6 +23,13 @@ public class MonthlyReport {
         return year;
     }
 
+    public static void showReports(ArrayList<MonthlyReport> monthlyReports) {
+        System.out.println("Вывод информации о месячных отчётах");
+        for (MonthlyReport report: monthlyReports) {
+            report.showReport();
+        }
+    }
+
     public void showReport() {
         System.out.println("-------------------------");
         System.out.println("Отчёт за " + Month.toString(getMonth()) + " " + getYear() + " год");
