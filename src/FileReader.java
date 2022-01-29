@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class FileReader {
+    static final String monthReportFirstLine = "item_name,is_expense,quantity,sum_of_one";
+    static final String yearReportFirstLine = "month,amount,is_expense";
+
 
     public static String readFileContentsOrNull(String path) {
         try {
@@ -19,7 +22,7 @@ public class FileReader {
         ArrayList<MonthInvoice> monthInvoices = new ArrayList<>();
         String[] lines = fileContents.split("\\R");
         for (String line:lines) {
-            if ("item_name,is_expense,quantity,sum_of_one".equals(line)) {
+            if (monthReportFirstLine.equals(line)) {
                 continue;
             }
             String[] items = line.split(",");
@@ -32,7 +35,7 @@ public class FileReader {
         String[] lines = fileContents.split("\\R");
         ArrayList<YearInvoice> yearInvoices = new ArrayList<>();
         for (String line:lines) {
-            if ("month,amount,is_expense".equals(line)) {
+            if (yearReportFirstLine.equals(line)) {
                 continue;
             }
             String[] items = line.split(",");
