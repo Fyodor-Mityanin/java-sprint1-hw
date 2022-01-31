@@ -23,26 +23,7 @@ public class MonthlyReport {
         return year;
     }
 
-    public static void showReports(ArrayList<MonthlyReport> monthlyReports) {
-        System.out.println("Вывод информации о месячных отчётах");
-        for (MonthlyReport report: monthlyReports) {
-            report.showReport();
-        }
-    }
-
-    public void showReport() {
-        System.out.println("-------------------------");
-        System.out.println("Отчёт за " + Month.toString(getMonth()) + " " + getYear() + " год");
-        MonthInvoice mostProfitableItem = getMostProfitableItem();
-        System.out.println("Самый прибыльный товар: " + mostProfitableItem.getItemName());
-        System.out.println("его продано на " + mostProfitableItem.profit() + " денег");
-        MonthInvoice mostExpensiveItem = getMostExpensiveItem();
-        System.out.println("Самая большая трата: " + mostExpensiveItem.getItemName());
-        System.out.println("потрачено " + mostExpensiveItem.profit() + " денег");
-        System.out.println("-------------------------");
-    }
-
-    private MonthInvoice getMostProfitableItem() {
+    public MonthInvoice getMostProfitableItem() {
         int max = 0;
         MonthInvoice mostProfitableItem = null;
         for(MonthInvoice invoice: getInvoices()) {
@@ -57,7 +38,7 @@ public class MonthlyReport {
         return mostProfitableItem;
     }
 
-    private MonthInvoice getMostExpensiveItem() {
+    public MonthInvoice getMostExpensiveItem() {
         int max = 0;
         MonthInvoice mostExpensiveItem = null;
         for(MonthInvoice invoice: getInvoices()) {

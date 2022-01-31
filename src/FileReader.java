@@ -4,11 +4,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class FileReader {
-    static final String monthReportFirstLine = "item_name,is_expense,quantity,sum_of_one";
-    static final String yearReportFirstLine = "month,amount,is_expense";
+    static String monthReportFirstLine = "item_name,is_expense,quantity,sum_of_one";
+    static String yearReportFirstLine = "month,amount,is_expense";
 
-
-    public static String readFileContentsOrNull(String path) {
+    public String readFileContentsOrNull(String path) {
         try {
             return Files.readString(Path.of(path));
         } catch (IOException e) {
@@ -18,7 +17,7 @@ public class FileReader {
         }
     }
 
-    public static ArrayList<MonthInvoice> getMonthInvoices(String fileContents) {
+    public ArrayList<MonthInvoice> getMonthInvoices(String fileContents) {
         ArrayList<MonthInvoice> monthInvoices = new ArrayList<>();
         String[] lines = fileContents.split("\\R");
         for (String line:lines) {
@@ -31,7 +30,7 @@ public class FileReader {
         return monthInvoices;
     }
 
-    public static YearlyReport getYearlyReport(String fileContents) {
+    public YearlyReport getYearlyReport(String fileContents) {
         String[] lines = fileContents.split("\\R");
         ArrayList<YearInvoice> yearInvoices = new ArrayList<>();
         for (String line:lines) {

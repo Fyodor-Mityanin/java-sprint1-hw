@@ -11,23 +11,36 @@ public class Printer {
     }
 
     public static void readingSuccess() {
-        System.out.println("------------------------------------------\n" +
-                "Считывание отчета прошло успешно\n" +
-                "------------------------------------------");
+        longLine();
+        System.out.println("Считывание отчета прошло успешно");
+        longLine();
     }
 
     public static void reportNotReady() {
-        System.out.println("--------------------\n" +
-                "Отчет не сформирован\n" +
-                "--------------------");
+        longLine();
+        System.out.println("Отчет не сформирован");
+        longLine();
     }
 
     public static void errorReadingFile() {
+        longLine();
         System.out.println("Ошибка при чтении файла");
+        longLine();
     }
 
     public static void exit() {
+        longLine();
         System.out.println("Выход из программы");
+        longLine();
     }
 
+    public static void longLine() {
+        System.out.println("-------------------------");
+    }
+
+    public static void readingMonthSuccess(Month month) {
+        longLine();
+        System.out.println("Считывание отчета за " + Month.toString(month) + " прошло успешно");
+        longLine();
+    }
 }
